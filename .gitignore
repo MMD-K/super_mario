@@ -1,2 +1,6 @@
 # skip build
 **/build/
+
+# skip pull push sh files
+.pull.sh
+.push.sh
