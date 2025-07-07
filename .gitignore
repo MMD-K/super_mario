@@ -5,6 +5,9 @@
 .pull.sh
 .push.sh
 
+# skip installer folder
+**/installer/
+
 
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
