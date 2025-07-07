@@ -16,7 +16,7 @@
 // #define GAMEDATA_ADDRESS "gamedata\\"
 // #define USERDATA_ADDRESS "usersdata\\"
 
-#define INSTALLATION_ADDRESS "./"
+#define INSTALLATION_ADDRESS "./data/"
 #define GAMEDATA_ADDRESS "gamedata/"
 #define USERDATA_ADDRESS "usersdata/"
 
