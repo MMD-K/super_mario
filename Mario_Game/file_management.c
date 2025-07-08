@@ -10,6 +10,19 @@
 
 //////////////////////////////// USER Functions ////////////////////////////////
 
+bool directory_exists(const char *path) {
+    struct stat stats;
+    return (stat(path, &stats) == 0) && S_ISDIR(stats.st_mode);
+}
+
+
+
+int create_dir(const char *path) {
+    return mkdir(path);  // 0755 = rwxr-xr-x permissions
+}
+
+
+
 int Do_Load_File(enum LOAD_FILE_STATUS load_file_status, FILE **file, char *file_name)
 {
     char file_address[ADDRESS_SIZE] = {};
@@ -20,14 +33,29 @@ int Do_Load_File(enum LOAD_FILE_STATUS load_file_status, FILE **file, char *file
     switch (load_file_status) {
     case LOAD_ALLUSERS:
         strcat(file_address, USERDATA_ADDRESS);
+
+        if (directory_exists(file_address) == false) {
+            create_dir(file_address);
+        }
+
         strcat(file_address, file_name);
         break;
     case LOAD_USER_ID:
         strcat(file_address, USERDATA_ADDRESS);
+
+        if (directory_exists(file_address) == false) {
+            create_dir(file_address);
+        }
+
         strcat(file_address, file_name);
         break;
     case LOAD_H_USER_ID:
         strcat(file_address, USERDATA_ADDRESS);
+
+        if (directory_exists(file_address) == false) {
+            create_dir(file_address);
+        }
+
         strcat(file_address, file_name);
         break;
     default:

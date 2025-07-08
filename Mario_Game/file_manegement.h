@@ -6,6 +6,10 @@
 
 #include <stdio.h>
 #include <time.h>
+// #include <dirent.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <stdbool.h>
 
 //////////////////////////////// Define ////////////////////////////////////////
 
@@ -137,6 +141,8 @@ struct ACCOUNT_GAME_HISTORY {
 
 //////////////////////////////// USER Functions ////////////////////////////////
 
+int create_dir(const char *path);
+bool directory_exists(const char *path);
 int Do_Load_File(enum LOAD_FILE_STATUS load_file_status, FILE **file, char *file_name);
 long long int Do_User_Finder(enum SEARCH_STATUS search_status, void *search_info);
 int Do_Add_Account(struct PERSONAL_USER_INFO *personal_user_info);
