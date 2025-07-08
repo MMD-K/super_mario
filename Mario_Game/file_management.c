@@ -34,6 +34,7 @@ int Do_Load_File(enum LOAD_FILE_STATUS load_file_status, FILE **file, char *file
     case LOAD_ALLUSERS:
         strcat(file_address, USERDATA_ADDRESS);
 
+        // if userdata directory is not exist, i will create it
         if (directory_exists(file_address) == false) {
             create_dir(file_address);
         }
@@ -43,6 +44,7 @@ int Do_Load_File(enum LOAD_FILE_STATUS load_file_status, FILE **file, char *file
     case LOAD_USER_ID:
         strcat(file_address, USERDATA_ADDRESS);
 
+        // if userdata directory is not exist, i will create it
         if (directory_exists(file_address) == false) {
             create_dir(file_address);
         }
@@ -52,6 +54,7 @@ int Do_Load_File(enum LOAD_FILE_STATUS load_file_status, FILE **file, char *file
     case LOAD_H_USER_ID:
         strcat(file_address, USERDATA_ADDRESS);
 
+        // if userdata directory is not exist, i will create it
         if (directory_exists(file_address) == false) {
             create_dir(file_address);
         }
