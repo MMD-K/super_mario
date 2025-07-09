@@ -3,6 +3,10 @@
 #include <string.h>
 #include <direct.h>
 #include "file_manegement.h"
+#include <shlobj.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <shlwapi.h>
 
 //////////////////////////////// Define ////////////////////////////////////////
 
@@ -18,47 +22,45 @@ bool directory_exists(const char *path) {
 
 
 int create_dir(const char *path) {
-    return mkdir(path);  // 0755 = rwxr-xr-x permissions
+    return SHCreateDirectoryExA(NULL, path, NULL);
 }
 
+
+char* get_userdata_path() {
+    char path[ADDRESS_SIZE];
+    if (SHGetFolderPathA(NULL, CSIDL_APPDATA, NULL, 0, path) == S_OK) {
+        strcat(path, "\\Super Mario\\"USERDATA_ADDRESS);
+        create_dir(path);
+        return strdup(path);
+    }
+    return NULL; // Fallback (handle error)
+}
 
 
 int Do_Load_File(enum LOAD_FILE_STATUS load_file_status, FILE **file, char *file_name)
 {
     char file_address[ADDRESS_SIZE] = {};
+    char *userdata_address = NULL;
 
-    strcpy(file_address, INSTALLATION_ADDRESS);
+    // get userdata address
+    if ((userdata_address = get_userdata_path()) == NULL) {
+        return ERROR_OPENING_FILE;
+    }
+    else {
+        strcpy(file_address, userdata_address);
+        free(userdata_address);
+        userdata_address = NULL;
+    }
 
     // create file address
     switch (load_file_status) {
     case LOAD_ALLUSERS:
-        strcat(file_address, USERDATA_ADDRESS);
-
-        // if userdata directory is not exist, i will create it
-        if (directory_exists(file_address) == false) {
-            create_dir(file_address);
-        }
-
         strcat(file_address, file_name);
         break;
     case LOAD_USER_ID:
-        strcat(file_address, USERDATA_ADDRESS);
-
-        // if userdata directory is not exist, i will create it
-        if (directory_exists(file_address) == false) {
-            create_dir(file_address);
-        }
-
         strcat(file_address, file_name);
         break;
     case LOAD_H_USER_ID:
-        strcat(file_address, USERDATA_ADDRESS);
-
-        // if userdata directory is not exist, i will create it
-        if (directory_exists(file_address) == false) {
-            create_dir(file_address);
-        }
-
         strcat(file_address, file_name);
         break;
     default:
@@ -193,14 +195,22 @@ int Do_Add_Account(struct PERSONAL_USER_INFO *personal_user_info)
 int Do_Delete_Account(int user_id)
 {
     char file_address[ADDRESS_SIZE] = {}, file_name[FILE_NAME_SIZE] = {}, *backup_file;
+    char *userdata_address = NULL;
     FILE *file = NULL;
     struct PERSONAL_USER_INFO temp_user_info;
     int struct_pui_size= sizeof(struct PERSONAL_USER_INFO);
     long long int indicator = 0, newfile_size = 0;
 
     // create file address
-    strcpy(file_address, INSTALLATION_ADDRESS);
-    strcat(file_address, USERDATA_ADDRESS);
+        // get userdata address
+    if ((userdata_address = get_userdata_path()) == NULL) {
+        return ERROR_OPENING_FILE;
+    }
+    else {
+        strcpy(file_address, userdata_address);
+        free(userdata_address);
+        userdata_address = NULL;
+    }
     strcpy(file_name, HISTORY_FILE_NAME);
     itoa(user_id, file_name + 1, 10);
     strcat(file_name, USER_FILE_FORMAT);
@@ -212,8 +222,15 @@ int Do_Delete_Account(int user_id)
     }
 
     // create file address
-    strcpy(file_address, INSTALLATION_ADDRESS);
-    strcat(file_address, USERDATA_ADDRESS);
+        // get userdata address
+    if ((userdata_address = get_userdata_path()) == NULL) {
+        return ERROR_OPENING_FILE;
+    }
+    else {
+        strcpy(file_address, userdata_address);
+        free(userdata_address);
+        userdata_address = NULL;
+    }
     strcat(file_address, file_name + 1);
     strcat(file_name, USER_FILE_FORMAT);
 
@@ -251,8 +268,15 @@ int Do_Delete_Account(int user_id)
     fclose(file);
 
     // create file address
-    strcpy(file_address, INSTALLATION_ADDRESS);
-    strcat(file_address, USERDATA_ADDRESS);
+        // get userdata address
+    if ((userdata_address = get_userdata_path()) == NULL) {
+        return ERROR_OPENING_FILE;
+    }
+    else {
+        strcpy(file_address, userdata_address);
+        free(userdata_address);
+        userdata_address = NULL;
+    }
     strcat(file_address, ALLUSER_FILE_NAME);
 
     // rewrite alluser file

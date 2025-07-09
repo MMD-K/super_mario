@@ -7,22 +7,20 @@
 #include <stdio.h>
 #include <time.h>
 // #include <dirent.h>
-#include <sys/stat.h>
-#include <sys/types.h>
 #include <stdbool.h>
 
 //////////////////////////////// Define ////////////////////////////////////////
 
-#define ADDRESS_SIZE 500
+#define ADDRESS_SIZE 1024
 
 //char G_location[ADDRESS_SIZE];
 // #define INSTALLATION_ADDRESS "C:\\games\\Mario_Game\\"
 // #define GAMEDATA_ADDRESS "gamedata\\"
 // #define USERDATA_ADDRESS "usersdata\\"
 
-#define INSTALLATION_ADDRESS "./data/"
-#define GAMEDATA_ADDRESS "gamedata/"
-#define USERDATA_ADDRESS "usersdata/"
+#define INSTALLATION_ADDRESS ".\\data\\"
+#define GAMEDATA_ADDRESS "gamedata\\"
+#define USERDATA_ADDRESS "usersdata\\"
 
 #define LOGIN_MAP_NAME "login_map.dat"
 #define MAIN_MENU_MAP_NAME "main_menu_map.dat"
@@ -143,6 +141,7 @@ struct ACCOUNT_GAME_HISTORY {
 
 int create_dir(const char *path);
 bool directory_exists(const char *path);
+char* get_userdata_path();
 int Do_Load_File(enum LOAD_FILE_STATUS load_file_status, FILE **file, char *file_name);
 long long int Do_User_Finder(enum SEARCH_STATUS search_status, void *search_info);
 int Do_Add_Account(struct PERSONAL_USER_INFO *personal_user_info);
